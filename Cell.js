@@ -1,6 +1,6 @@
 export class Cell {
-    constructor(isAccesable=true) {
-        this.isAccesable = isAccesable
+    constructor(isAccessible=true) {
+        this.isAccessible = isAccessible
         this.isVisited = false
     }
 
