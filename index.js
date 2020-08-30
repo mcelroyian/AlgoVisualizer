@@ -6,5 +6,6 @@ gameBoard.newGrid()
 gameBoard.drawGrid()
 let cellsToDraw = [[0,1,"red"],[3,5,"blue"]]
 gameBoard.drawGrid(cellsToDraw)
+gameBoard.BFT()
 
 console.log(gameBoard)

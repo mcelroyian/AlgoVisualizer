@@ -11,6 +11,7 @@ export class Board {
         this.clear = "#fff";
         this.blocked = "#000";
         this.ctx = this.createContext(ctx)
+        this.pixelsToRedraw = []
     }
 
     newGrid() {
@@ -22,17 +23,47 @@ export class Board {
         }
     }
 
-    DFS() {
+    BFT(first=[0,0]) {
         let nextGrid = this.grid.map(row => [...row])
-        let pixels = new Set()
-        //calculate what cells i need to update
-        return pixels
+        let queue = new Array()
+        let visited = new Set()
+        queue.push(first)
+
+        while(!queue.length == 0) {
+            let [col, row] = queue.shift()
+            this.pixelsToRedraw.push([col, row, "green"])
+            visited.add([col, row].toString())
+            this.drawGrid(this.pixelsToRedraw)
+            this.pixelsToRedraw = []
+            debugger
+            if ( (col - 1 > 0) && (!visited.has([col -1,row].toString()))) {
+                queue.push([col- 1, row])
+                this.pixelsToRedraw.push([col -1, row, "orange"])
+            }
+            if ( (col + 1 < this.grid.length) && (!visited.has([col + 1,row].toString()))) {
+                queue.push([col + 1, row])
+                this.pixelsToRedraw.push([col + 1, row, "orange"])
+            }
+            if ( (row - 1 > 0) && (!visited.has([col,row - 1 ].toString()))) {
+                queue.push([col, row - 1 ])
+                this.pixelsToRedraw.push([col, row - 1 , "orange"])
+            }
+            if ( (row + 1 < this.grid.length) && (!visited.has([col,row + 1].toString()))) {
+                queue.push([col, row + 1])
+                this.pixelsToRedraw.push([col, row + 1, "orange"])
+            }
+
+            this.drawGrid(this.pixelsToRedraw)
+            this.pixelsToRedraw = []
+
+        }
+        //calculate what cells i need to updated
+        return -1
     }
 
     drawGrid(cellsToUpdate=null) {
         debugger
         if(cellsToUpdate) {
-            console.log(cellsToUpdate)
             cellsToUpdate.forEach((val) => {
                 this.ctx.fillStyle = val[2]
                 this.ctx.beginPath();
